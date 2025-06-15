@@ -1,0 +1,86 @@
+#copyr{
+    background-color: var(--gray-5);
+}
+
+#copyr-h{
+    max-width: min(960px,90vw);
+    margin: 0 auto;
+    padding: 4vmin 0;
+    display: block;
+    text-align: center;
+    color: white;
+    font-size: 1.1vmax;
+    font-size: 1.1dvmax;
+}
+
+/* Hubungi */
+
+#hubungi{
+    --hubungi-h: white;
+    background: var(--gray-6);
+    position: relative;
+}.hubungi-h{
+    text-align: left;
+    color: var(--hubungi-h);
+    /* color: white; */
+    font-weight:600;
+    /* letter-spacing:2.6px; */
+    text-transform: uppercase;
+    font-family: 'Passion One', cursive;
+    font-size: clamp(1.8rem, 4vw, 46px)
+}.hubungi-h-em{
+    font-size: clamp(2.2rem, 5.2vw, 60px)
+}.hubungi-sort{
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    flex-direction: column;
+    max-width: min(960px,90vw);
+    margin: 0 auto;
+    padding: 10vw 0 2em 0;
+}.hubungi-h-2{
+    color: white;
+    font-size: 1.6vmax;
+    font-size: 1.6dvmax;
+    font-weight: 300;
+}@media (max-width:600px){
+    .hubungi-sort{
+        padding-top: 7vh;
+    }
+}
+
+.logo-wa{
+    font-size: 1.4vmax;
+    font-size: 1.4dvmax;
+    width: 2.3em;
+    height: 2.3em;
+    display: block;
+    background-image: url(../IMG/wa.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    fill: currentColor;
+    color: white;
+}
+
+.hubungi-p-wraper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1em;
+}.hubungi-p{
+    color: white;
+    font-size: 1.4vmax;
+    font-size: 1.4dvmax;
+    margin-left: 2vmin;
+    line-height: 1.15em;
+    font-family: 'Poppins', sans-serif;
+}
+
+.v-line{
+    border-left: 1px solid white;
+    margin-left: 2vmin;
+    font-size: 1.4vmax;
+    font-size: 1.4dvmax;
+    height: 2em;
+}
