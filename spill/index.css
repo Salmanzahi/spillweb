@@ -107,7 +107,16 @@ html{
 }
 
 .index-logo{
-    --logo-about-w: clamp(5em, 28vmax, 40em);
+    --logo-about-w: 12em;
+}
+
+@media (max-width: 767px) {
+    .index-logo {
+        --logo-about-w: 8em;
+    }
+}
+
+.index-logo{
     width: var(--logo-about-w);
     height: auto;
     aspect-ratio: 1/1;

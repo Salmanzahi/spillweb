@@ -114,6 +114,7 @@ const indexMenu1 = document.querySelector(".imw1");
 const indexMenu2 = document.querySelector(".imw2");
 const indexHeading = document.querySelector(".index-heading");
 const helper = document.querySelector(".click");
+const notifyclick = document.getElementById("notifyclick");
 
 let isIndexMenuOp = false
 
@@ -127,7 +128,11 @@ function indexMenuTogler() {
             indexMenu2.classList.add("index-slide");
         }, 20);
         circle.style.rotate = '-20deg';
-        logo.style.transform = 'translateY(-5vmin)';
+        if (window.innerWidth < 768) {
+            logo.style.transform = 'translateY(-5vmin) scale(0.8)';
+        } else {
+            logo.style.transform = 'translateY(-5vmin)';
+        }
         helper.style.transform = 'translateY(5em)';
         
         progH.style.transform = 'translateX(-150%) rotate(90deg)';
@@ -137,6 +142,10 @@ function indexMenuTogler() {
         leftOvr.classList.add("block");
         rightOvr.classList.remove("noBlock");
         rightOvr.classList.add("block");
+        notifyclick.style.display = 'block';
+
+        // Add a click listener to the body to close the menu
+        document.body.addEventListener('click', closeMenuOnClickOutside);
 
         isIndexMenuOp = true;
     }
@@ -149,7 +158,11 @@ function indexMenuTogler() {
             indexMenu2.classList.remove("index-appear");
         }, 500);
         circle.style.rotate = '0deg';
-        logo.style.transform = 'translateY(0)';
+        if (window.innerWidth < 768) {
+            logo.style.transform = 'translateY(0) scale(1)';
+        } else {
+            logo.style.transform = 'translateY(0)';
+        }
         
         progH.style.transform = 'translateX(0) rotate(90deg)';
         desH.style.transform = 'translateX(0) rotate(-90deg)';
@@ -158,34 +171,23 @@ function indexMenuTogler() {
         leftOvr.classList.remove("block");
         rightOvr.classList.add("noBlock");
         rightOvr.classList.remove("block");
+        notifyclick.style.display = 'none';
+        // Remove the click listener from the body
+        document.body.removeEventListener('click', closeMenuOnClickOutside);
 
         isIndexMenuOp = false;
     }
 }
 
-
-/*
- ADDITIONAL CODE (15/06/2025)
-*/
-
-const desktopOnlyElements = document.querySelectorAll('.desktop-only');
-
-function toggleDesktopOnlyElements() {
-    if (window.innerWidth < 768) { // Adjust threshold as needed
-        desktopOnlyElements.forEach(el => {
-            el.style.display = 'none';
-        });
-    } else {
-        desktopOnlyElements.forEach(el => {
-            el.style.display = 'block'; // Or 'initial', 'inline', etc., depending on original display type
-        });
+function closeMenuOnClickOutside(event) {
+    // Check if the click is outside the logo wrapper and the menu itself
+    // and if the menu is open
+    if (isIndexMenuOp && 
+        !circleW.contains(event.target) && 
+        !indexMenu1.contains(event.target) && 
+        !indexMenu2.contains(event.target)) {
+        indexMenuTogler();
     }
 }
-
-// Initial check on page load
-document.addEventListener('DOMContentLoaded', toggleDesktopOnlyElements);
-
-// Check on window resize
-window.addEventListener('resize', toggleDesktopOnlyElements);
 
 
