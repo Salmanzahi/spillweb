@@ -107,12 +107,16 @@ html{
 }
 
 .index-logo{
-    --logo-about-w: 12em;
+    --logo-about-w: 20em;
 }
 
 @media (max-width: 767px) {
     .index-logo {
-        --logo-about-w: 8em;
+        --logo-about-w: 10em;
+    }
+    .desktop-only {
+        /* Hide elements with .desktop-only class on mobile */
+        display: none !important;
     }
 }
 

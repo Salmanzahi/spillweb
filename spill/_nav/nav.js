@@ -4,7 +4,7 @@ class NavBar extends HTMLElement{
 
         this.home = '../';
         this.about = 'about';
-        this.blog = '404.html" rel="nofollow';
+        this.blog = '../spill/blog/';
         this.proj = 'https://www.instagram.com/spill.16?igsh=dXhpdHlwMm5hdWly" rel="nofollow';
         this.desHome = 'design/" rel="nofollow';
         this.progHome = 'program/" rel="nofollow'; // rel nofollow added cause the page is still on working
@@ -35,10 +35,26 @@ class NavBar extends HTMLElement{
                         </li>
                         <li><a class="blog" href="${this.blog}" tabindex="7">Blog</a></li>
                     </ul>
-                    <div class="hbr-c-wraper">    
-                        <button class="hbr-c" aria-controls="primary-navigation" tabindex="8" title="primary navigation" type="button">
-                            <div class="hbr"></div>
-                        </button>
+                    <div class="nav-right-controls">
+                        <div id="authContainer" style="position: relative;">
+                            <button class="login-btn" id="loginBtn" tabindex="9" type="button">
+                                <svg id="loginIcon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                                <img id="userProfilePic" src="#" alt="User Profile" style="display:none; width: 24px; height: 24px; border-radius: 50%; margin-right: 8px;"/>
+                                <span id="loginText">Login</span>
+                            </button>
+                            <div id="profilePopup" style="display:none; position: absolute; top: calc(100% + 10px); right: 0; background-color: #2c3e50; border: 1px solid #34495e; border-radius: 8px; padding: 15px; z-index: 100; min-width: 250px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); color: #ecf0f1;">
+                                <img id="popupUserProfilePic" src="#" alt="User Profile" style="width: 60px; height: 60px; border-radius: 50%; display: block; margin: 0 auto 10px;">
+                                <p id="popupUsername" style="text-align: center; font-weight: bold; margin-bottom: 5px; color: #ecf0f1;"></p>
+                                <p id="popupEmail" style="text-align: center; font-size: 0.9em; margin-bottom: 8px; color: #bdc3c7;"></p>
+                                <p id="popupJoinDate" style="text-align: center; font-size: 0.8em; margin-bottom: 15px; color: #95a5a6;"></p>
+                                <button id="signOutBtnPopup" style="background-color: #e74c3c; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 100%; font-size: 0.9em;">Sign Out</button>
+                            </div>
+                        </div>
+                        <div class="hbr-c-wraper">    
+                            <button class="hbr-c" aria-controls="primary-navigation" tabindex="8" title="primary navigation" type="button">
+                                <div class="hbr"></div>
+                            </button>
+                        </div>
                     </div>    
                 </div>
 
@@ -77,6 +93,8 @@ class NavBar extends HTMLElement{
 }
 
 window.customElements.define('nav-bar', NavBar);
+
+import { signInWithGoogle, signOutUser, onAuthChange } from '../script/auth.js';
 
 //
 
@@ -152,3 +170,78 @@ if (window.matchMedia("(max-width: 767px)").matches)
 {
     progNav.style.fontSize = "10px";
 }
+
+// Firebase Auth UI updates
+const loginBtn = document.getElementById('loginBtn');
+const loginText = document.getElementById('loginText');
+const loginIcon = document.getElementById('loginIcon');
+const userProfilePic = document.getElementById('userProfilePic');
+const profilePopup = document.getElementById('profilePopup');
+const popupUserProfilePic = document.getElementById('popupUserProfilePic');
+const popupUsername = document.getElementById('popupUsername');
+const popupEmail = document.getElementById('popupEmail');
+const popupJoinDate = document.getElementById('popupJoinDate');
+const signOutBtnPopup = document.getElementById('signOutBtnPopup');
+const authContainer = document.getElementById('authContainer');
+
+
+let isPopupOpen = false;
+
+function toggleProfilePopup(show) {
+    if (show) {
+        profilePopup.style.display = 'block';
+        isPopupOpen = true;
+    } else {
+        profilePopup.style.display = 'none';
+        isPopupOpen = false;
+    }
+}
+
+// Close popup if clicked outside
+document.addEventListener('click', function(event) {
+    if (isPopupOpen && !authContainer.contains(event.target)) {
+        toggleProfilePopup(false);
+    }
+});
+
+onAuthChange((user) => {
+    if (user) {
+        // User is signed in
+        loginText.textContent = user.displayName || 'Account';
+        if (user.photoURL) {
+            userProfilePic.src = user.photoURL;
+            popupUserProfilePic.src = user.photoURL;
+            userProfilePic.style.display = 'inline-block';
+            loginIcon.style.display = 'none';
+        } else {
+            userProfilePic.style.display = 'none';
+            loginIcon.style.display = 'inline-block'; // Show default icon if no photo
+        }
+
+        popupUsername.textContent = user.displayName || 'N/A';
+        popupEmail.textContent = user.email || 'N/A';
+        // Firebase user object doesn't directly provide join date.
+        // You get metadata.creationTime which is a timestamp.
+        const creationTime = user.metadata.creationTime;
+        const joinDate = creationTime ? new Date(creationTime).toLocaleDateString() : 'N/A';
+        popupJoinDate.textContent = `Joined: ${joinDate}`;
+
+        loginBtn.onclick = (event) => {
+            event.stopPropagation(); // Prevents click from bubbling to document listener immediately
+            toggleProfilePopup(!isPopupOpen); 
+        };
+        signOutBtnPopup.onclick = () => {
+            signOutUser();
+            toggleProfilePopup(false);
+        }
+
+    } else {
+        // User is signed out
+        loginText.textContent = 'Login';
+        userProfilePic.style.display = 'none';
+        loginIcon.style.display = 'inline-block';
+        profilePopup.style.display = 'none'; 
+        isPopupOpen = false;
+        loginBtn.onclick = () => signInWithGoogle();
+    }
+});

@@ -176,7 +176,54 @@ body{
     display: flex;
     align-items: center;
     justify-content: end;
-}@media (max-width:400px) {
+}
+
+.nav-right-controls {
+    display: flex;
+    align-items: center;
+}
+
+.login-btn {
+    background: transparent;
+    border: 1px solid var(--text-color-nav);
+    color: var(--text-color-nav);
+    padding: 0.5em 1em;
+    margin-right: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-family: 'lexend', sans-serif;
+    font-size: min(16px, 3.5vw);
+    transition: all 0.3s ease;
+}
+
+.login-btn svg {
+    margin-right: 8px;
+}
+
+.login-btn:hover {
+    background: var(--text-color-nav);
+    color: var(--bg-color-nav-2, var(--gray-5)); /* Fallback to gray-5 if --bg-color-nav-2 is not set */
+}
+
+.login-btn:hover svg {
+    fill: var(--bg-color-nav-2, var(--gray-5));
+}
+
+@media (max-width:767px) {
+    .login-btn span {
+        display: none; /* Hide text on smaller screens, show only icon */
+    }
+    .login-btn {
+        padding: 0.5em;
+    }
+    .nav-right-controls {
+        margin-right: -10px; /* Adjust spacing for mobile */
+    }
+}
+
+@media (max-width:400px) {
     .hbr-c-wraper{
         transform: scale(0.8);
     }

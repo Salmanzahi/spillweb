@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<head>
+   
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Page | SPILL Website</title>
+    <link rel="stylesheet" type="text/css" href="loader.css">
+    <link rel="stylesheet" type="text/css" href="../global.css">
+    <link rel="stylesheet" type="text/css" href="../_nav/nav.css">
+    <link rel="stylesheet" type="text/css" href="../_footer/footer.css">
+    <link rel="stylesheet" type="text/css" href="design.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+
+</head>
+
+<body onload="timer()">
+    
+  
+    <nav-bar></nav-bar>  
+
+    <div class="clr"></div>
+
+    <section">
+        <!--<div class="circle"></div>
+        <div class="circle1"></div>-->
+        <div class="main-sec">
+            <div class="blog-content-area">
+                <div class="tabs-container">
+                    <button class="tab-button active" onclick="openTab(event, 'createPostTab')">Create Post</button>
+                    <button class="tab-button" onclick="openTab(event, 'messagesTab')">Messages</button>
+                </div>
+
+                <div id="createPostTab" class="tab-content" style="display: block;">
+                    <div id="createPostSection" style="/* display: none; */ margin-bottom: 30px; padding: 20px; background-color: var(--card-bg); border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <h2>Create New Blog Post</h2>
+                    <form id="createPostForm">
+                        <div>
+                            <label for="postTitle">Title:</label>
+                            <input type="text" id="postTitle" name="postTitle" required>
+                        </div>
+                        <div>
+                            <label for="postCategory">Category:</label>
+                            <input type="text" id="postCategory" name="postCategory" required>
+                        </div>
+                        <div>
+                            <label for="postContent">Content:</label>
+                            <textarea id="postContent" name="postContent" rows="10" required></textarea>
+                        </div>
+                        <div>
+                            <label for="postImage">Image (optional):</label>
+                            <input type="file" id="postImage" name="postImage" accept="image/*">
+                        </div>
+                        <button type="submit" class="btn-submit">Create Post</button>
+                    </form>
+                </div>
+
+                </div>
+
+                <div id="messagesTab" class="tab-content" style="display: none;">
+                    <ul class="blog-posts" id="blogPostsContainer">
+                        <!-- Blog posts will be dynamically inserted here -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer-component></footer-component>
+  
+    <script src="loader.js"></script>
+    <script src="../global.js"></script>
+    <script type="module" src="../_nav/nav.js"></script>
+    <script type="module" src="../_nav/navTrans.js"></script>
+    <script type="module" src="blog.js"></script> <!-- Added blog.js for dynamic content -->
+    <script src="../_footer/footer.js"></script> <!-- Added footer script -->
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+        // Initialize the default open tab (Create Post if user is logged in, otherwise Messages)
+        // This part will be handled by blog.js based on auth state, for now, default to createPostTab if it exists or first tab
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if createPostSection is visible initially (logic handled by blog.js)
+            // For now, let's assume if the user can see createPostSection, that tab should be active.
+            // Otherwise, default to messagesTab or the first available tab.
+            const createPostForm = document.getElementById('createPostSection');
+            if (document.getElementById('createPostTab')) {
+                 if (createPostForm && window.getComputedStyle(createPostForm).display !== 'none' && document.getElementById('createPostTab').style.display === 'block') {
+                    // If createPostSection exists and is meant to be shown (by blog.js), ensure 'Create Post' tab is active
+                    // This logic might need refinement based on how blog.js controls visibility
+                 } else if(document.getElementById('messagesTab')) {
+                    // Default to messages tab if create post is not the default or not available.
+                    openTab({currentTarget: document.querySelector('.tab-button[onclick*="messagesTab"]')}, 'messagesTab');
+                 }
+            }
+        });
+    </script>
+</body>
+</html>
