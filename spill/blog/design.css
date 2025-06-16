@@ -38,11 +38,11 @@ body{
 
 
 .blog-content-area {
-    width: 90%;
+    width: 95%;
     max-width: 900px; /* Responsive max-width for content */
     margin: 3em auto; /* Centering and vertical spacing */
     padding: 2em;
-    background-color: var(--gray-5, #2a2e35); /* Darker gray background */
+    background-color: var(--gray-5, #31466d); /* Darker gray background */
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     color: var(--gray-1, #dbe1e8); /* Lighter text for dark background */
@@ -250,12 +250,13 @@ body{
 }
 
 .blog-posts li {
+    /* color: red; */
     margin-bottom: 30px;
 }
 
 /* Moved .blog-post styling from previous location and potentially merged */
 .blog-post {
-    background-color: var(--card-bg, var(--gray-5));
+    background-color: var(--card-bg, var(--gray-6));
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);

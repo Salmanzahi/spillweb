@@ -4,6 +4,7 @@ import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'http
 import { getAuth } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js';
 import { firebaseConfig } from '../script/firebasecr.js';
 import { onAuthChange } from '../script/auth.js';
+import { showAlert } from '../_props/betteralert.js';
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -77,11 +78,12 @@ if (createPostForm) {
                 authorPhotoURL: user.photoURL || '', // Store author's photo URL
                 createdAt: serverTimestamp()
             });
-            alert('Blog post created successfully!');
+            showAlert('Blog post created successfully!', 'success');
+            // alert('Blog post created successfully!');
             createPostForm.reset();
         } catch (error) {
             console.error('Error creating post: ', error);
-            alert('Error creating post. Please try again.');
+            showAlert('Error creating post. Please try again.', 'success');
         }
     });
 }
@@ -131,7 +133,13 @@ function escapeHTML(str) {
     return div.innerHTML;
 }
 
-// Load posts when the script runs
-if (blogPostsContainer) {
+// // Load posts when the script runs
+// if (blogPostsContainer) {
+//     displayPosts();
+// }
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Load posts when the DOM is fully loaded
     displayPosts();
-}
+});
